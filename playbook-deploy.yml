@@ -1,0 +1,36 @@
+---
+- name: Install Git, HTTPD , start service and deoloy services
+  become: yes
+  hosts: all
+
+  tasks:
+    - name: install git
+      yum:
+        name: git
+        state: present
+
+    - name: install httpd
+      yum:
+        name: httpd
+        state: present
+    - name: start httpd web service
+      service:
+        name: httpd
+        state: started
+      tags: httpd_services
+    
+    - name: status of httpd
+      shell: service httpd status
+      register: service_op
+      tags: httpd_services
+
+    - name: display service status output
+      debug:
+        var: service_op
+      tags: service-httpd
+
+      - name: DEploying the code
+        copy:
+          src: /var/lib/jenkins/workspace/deploy-angular-app/dist/akbar-app/
+          dest: /var/www/html/
+        tags: deploy_code
