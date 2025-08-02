@@ -29,8 +29,8 @@
         var: service_op
       tags: service-httpd
 
-      - name: DEploying the code
-        copy:
-          src: /var/lib/jenkins/workspace/deploy-angular-app/dist/akbar-app/
-          dest: /var/www/html/
-        tags: deploy_code
+    - name: DEploying the code
+      copy:
+        src: /var/lib/jenkins/workspace/deploy-angular-app/dist/akbar-app/
+        dest: /var/www/html/
+      tags: deploy_code
