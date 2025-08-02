@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('SCM') {
+            steps {
+                git 'https://github.com/isaitejabandari/akbar-app.git'
+            }
+        }
+        stage('install') {
+            steps {
+                sh 'npm install'
+            }
+        }
+        stage('build') {
+            steps {
+                sh 'npm run build --prod'
+            }
+        }
+        stage('ansible-deploy') {
+            steps {
+                ansiblePlaybook become: true, credentialsId: 'b84753ab-04b4-4545-a3b9-8b3c26bf2cee', disableHostKeyChecking: true, inventory: 'host.inv', playbook: 'playbook-deploy.yml', vaultTmpPath: ''
+            }
+        }
+    }
+}
